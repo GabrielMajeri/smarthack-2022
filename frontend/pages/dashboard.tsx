@@ -15,6 +15,7 @@ import {
 import Organisation from "./Components/dashboard/Organisation";
 import Teams from "./Components/dashboard/Teams";
 import { MainLink } from "./Components/MainLink";
+import DashboardTabs from "./Components/dashboard/DashboardTabs";
 
 export default function AppShellDemo() {
   const theme = useMantineTheme();
@@ -54,18 +55,18 @@ export default function AppShellDemo() {
           <MainLink label="Adaugă echipă"></MainLink>
         </Navbar>
       }
-      aside={
-        <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-          <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
-            <Text>Application sidebar</Text>
-          </Aside>
-        </MediaQuery>
-      }
-      footer={
-        <Footer height={60} p="md">
-          Application footer
-        </Footer>
-      }
+      // aside={
+      //   <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+      //     <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
+      //       <Text>Application sidebar</Text>
+      //     </Aside>
+      //   </MediaQuery>
+      // }
+      // footer={
+      //   <Footer height={60} p="md">
+      //     Application footer
+      //   </Footer>
+      // }
       header={
         <Header height={{ base: 50, md: 70 }} p="md">
           <div
@@ -80,13 +81,13 @@ export default function AppShellDemo() {
                 mr="xl"
               />
             </MediaQuery>
-            <Image height={48} width={48} src="/logo.png"></Image>
-            <Text>AutoFlow</Text>
+            <Image height={48} width={150} src="/logo.png"></Image>
           </div>
         </Header>
       }
     >
-      <Text>Resize app to see responsive navbar in action</Text>
+      {" "}
+      <DashboardTabs />
     </AppShell>
   );
 }
