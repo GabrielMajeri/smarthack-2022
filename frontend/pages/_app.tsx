@@ -8,7 +8,6 @@ import "../styles/SectionFive.scss";
 import "../styles/SectionFour.scss";
 import "../styles/SectionThree.scss";
 import "../styles/SectionTwo.scss";
-import "../styles/Login.scss";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 
