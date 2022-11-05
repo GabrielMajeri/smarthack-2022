@@ -1,162 +1,58 @@
-import {
-  Text,
-  Container,
-  Anchor,
-  MediaQuery,
-  Button,
-  Image,
-  Grid,
-  Center,
-  useMantineTheme,
-} from "@mantine/core";
+import { Text, Container, Anchor, MediaQuery, Button } from "@mantine/core";
 import { MdOutlineArrowDownward } from "react-icons/md";
 import { Link } from "react-scroll";
-import {
-  useSession,
-  signIn,
-  signOut as nextAuthSignOut,
-} from "next-auth/react";
-import Router from "next/router";
-
-const signOut = async () => {
-  // We want to also sign out from Keycloak
-  const response = await fetch("/api/auth/keycloak-logout");
-
-  if (response.ok) {
-    const { path } = await response.json();
-
-    nextAuthSignOut({ redirect: false });
-
-    window.location.href = path;
-  } else {
-    console.error("Failed to sign out: %s", response.body);
-  }
-};
 
 const About = () => {
-  const theme = useMantineTheme();
-  const { data: session } = useSession();
+  //const theme = useMantineTheme();
 
-  if (session) {
-    return (
-      <section id="about">
-        <Container fluid>
-          <div className="about-content">
-            <Center>
-              <Image src="/logo.png" style={{ width: "50%" }} />
-            </Center>
+  return (
+    <section id="about">
+      <Container fluid>
+        <div className="about-content">
+          <div style={{ marginBottom: 15 }}>
+            <Text transform="uppercase" weight={500} color="yellow">
+              MADE WITH REACT AND MANTINE
+            </Text>
+          </div>
 
-            {/* <div style={{ marginBottom: 15 }}>
-                        <Text transform="uppercase" weight={500} color="yellow">
-                            MADE WITH REACT AND MANTINE
-                        </Text>
-                    </div>
-
-                    <div style={{ marginBottom: 15 }}>
-                        <Text>
-                            <MediaQuery query="(max-width: 768px)" styles={{ fontSize: '2.8rem !important' }}>
-                                <h1 className="title">Simple Mantine Template</h1>
-                            </MediaQuery>
-                        </Text>
-                    </div> */}
-
-            <div style={{ marginBottom: 25 }}>
-              <Text size="xl" color="black">
-                Debirocratizarea domeniului public din România prin soluții
-                digitale simple.
-              </Text>
-            </div>
-
-            <div style={{ marginBottom: 15 }}>
-              <Text
-                size="lg"
-                style={{ color: "var(--custom-red)", fontSize: "1.5rem" }}
+          <div style={{ marginBottom: 15 }}>
+            <Text>
+              <MediaQuery
+                query="(max-width: 768px)"
+                styles={{ fontSize: "2.8rem !important" }}
               >
-                Bine ai venit, {session.user?.name} !
-              </Text>
-            </div>
+                <h1 className="title">Simple Mantine Template</h1>
+              </MediaQuery>
+            </Text>
+          </div>
 
-            <div className="buttons">
-              <Link to="section-four" smooth duration={500}>
-                <Button
-                  style={{ background: "var(--custom-red)" }}
-                  rightIcon={<MdOutlineArrowDownward size={16} />}
-                  radius="lg"
-                  size="md"
-                >
-                  Despre noi
-                </Button>
-              </Link>
+          <div style={{ marginBottom: 25 }}>
+            <Text size="xl" color="black">
+              Simple showcase of this powerful and well implemented library
+              called <Anchor href="https://mantine.dev/">Mantine</Anchor>.
+            </Text>
+          </div>
 
+          <div className="buttons">
+            <Link to="section-one" smooth duration={500}>
               <Button
-                variant="default"
+                color="yellow"
+                rightIcon={<MdOutlineArrowDownward size={16} />}
                 radius="lg"
                 size="md"
-                onClick={() => signOut()}
               >
-                Deconectare
+                Tell me more
               </Button>
-            </div>
+            </Link>
+
+            <Button variant="default" radius="lg" size="md">
+              Other stuff
+            </Button>
           </div>
-        </Container>
-      </section>
-    );
-  } else {
-    return (
-      <section id="about">
-        <Container fluid>
-          <div className="about-content">
-            <Center>
-              <Image src="/logo.png" style={{ width: "50%" }} />
-            </Center>
-
-            {/* <div style={{ marginBottom: 15 }}>
-                        <Text transform="uppercase" weight={500} color="yellow">
-                            MADE WITH REACT AND MANTINE
-                        </Text>
-                    </div>
-
-                    <div style={{ marginBottom: 15 }}>
-                        <Text>
-                            <MediaQuery query="(max-width: 768px)" styles={{ fontSize: '2.8rem !important' }}>
-                                <h1 className="title">Simple Mantine Template</h1>
-                            </MediaQuery>
-                        </Text>
-                    </div> */}
-
-            <div style={{ marginBottom: 25 }}>
-              <Text size="xl" color="black">
-                Debirocratizarea domeniului public din România prin soluții
-                digitale simple.
-              </Text>
-            </div>
-
-            <div className="buttons">
-              <Link to="section-four" smooth duration={500}>
-                <Button
-                  style={{ background: "var(--custom-red)" }}
-                  rightIcon={<MdOutlineArrowDownward size={16} />}
-                  radius="lg"
-                  size="md"
-                >
-                  Despre noi
-                </Button>
-              </Link>
-
-              <Button
-                variant="default"
-                radius="lg"
-                size="md"
-                onClick={() => Router.push("/login-form")}
-              >
-                Conectare
-              </Button>
-            </div>
-          </div>
-        </Container>
-      </section>
-    );
-  }
+        </div>
+      </Container>
+    </section>
+  );
 };
 
 export default About;
