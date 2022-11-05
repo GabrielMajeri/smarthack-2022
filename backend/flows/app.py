@@ -26,7 +26,7 @@ def flows():
         return jsonify(flows)
 
     if request.method == 'POST':
-        result = mongo_api.collection.insert_one({'a': 'dsfab'}).inserted_id
+        result = mongo_api.collection.insert_one(request.json).inserted_id
         return jsonify({'id': str(result)})
 
 
