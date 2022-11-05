@@ -42,7 +42,7 @@ def flow(id):
 
     if request.method == 'DELETE':
         flow_query = mongo_api.collection.find_one(ObjectId(id))
-        
+
         if not flow_query:
             return 'Not found', 404
 
