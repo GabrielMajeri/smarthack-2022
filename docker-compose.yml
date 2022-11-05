@@ -11,5 +11,16 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: smarthack
+      MYSQL_DATABASE: smarthack
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
 volumes:
   mongo-data:
+  mysql-data:
