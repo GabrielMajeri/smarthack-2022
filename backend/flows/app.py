@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from MongoAPI import MongoAPI
-from utils import parse_flow_object
+from utils import parse_flow_object, hash_flow_object
 from bson import ObjectId
 
 
@@ -48,6 +48,16 @@ def flow(id):
 
         mongo_api.collection.delete_one({'_id': ObjectId(id)})
         return 'Deleted.', 200
+
+
+@app.route('/flows/<id>/hash', methods=['GET'])
+def flow_hash(id):
+    flow_query = mongo_api.collection.find_one(ObjectId(id))
+
+    if not flow_query:
+        return 'Not found', 404
+
+    return jsonify({'hash': hash_flow_object(flow_query)})
 
 
 if __name__ == "__main__":
