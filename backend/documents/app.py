@@ -34,12 +34,12 @@ def upload_file():
         f = request.files['file']
 
         f_uuid = str(uuid.uuid4())
-        f_name = f_uuid + secure_filename(f.filename)
-        f_path = app.config['UPLOAD_FOLDER'] + f_name
+        f_name = secure_filename(f.filename)
+        f_path = f_uuid + secure_filename(f.filename)
 
-        f.save(f_path)
+        f.save(upload_folder + f_path)
 
-        f_size = os.stat(f_path).st_size
+        f_size = os.stat(upload_folder + f_path).st_size
 
         cursor = mysql_api.connection.cursor()
         sql_q = 'INSERT INTO documents (name, file_path, size) VALUES (%s, %s, %s)'
@@ -62,7 +62,12 @@ def get_file(id):
         if not data:
             return 'Not found', 404
 
-        return jsonify(data[0])
+        value = {
+            "id": data[0].get('id'),
+            "name": data[0].get('name'),
+            "size": data[0].get('size')
+        }
+        return jsonify(value)
 
 
 @app.route('/documents/<id>/file', methods=['GET'])
@@ -78,7 +83,7 @@ def get_file_as_file(id):
             return 'Not found', 404
 
         try:
-            return send_from_directory(upload_folder, data[0]['name'], as_attachment=True)
+            return send_from_directory(os.environ.get('UPLOAD_FOLDER'), data[0]['name'], as_attachment=True)
         except:
             return 'Not found', 404
 
