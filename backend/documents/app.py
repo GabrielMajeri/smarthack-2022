@@ -78,12 +78,12 @@ def get_file_as_file(id):
 
         result = cursor.execute(sql_q)
         data = cursor.fetchall()
-
+        print(data)
         if not data:
             return 'Not found', 404
 
         try:
-            return send_from_directory(os.environ.get('UPLOAD_FOLDER'), data[0]['name'], as_attachment=True)
+            return send_from_directory(os.environ.get('UPLOAD_FOLDER'), data[0]['file_path'], as_attachment=True)
         except:
             return 'Not found', 404
 
@@ -101,7 +101,7 @@ def get_file_as_hash(id):
             return 'Not found', 404
 
         try:
-            with open(upload_folder + data[0]['name'], 'rb') as f:
+            with open(upload_folder + data[0]['file_path'], 'rb') as f:
                 data = f.read()
                 data_hashed = hashlib.sha256(data).hexdigest()
                 return jsonify({'hash': data_hashed})
