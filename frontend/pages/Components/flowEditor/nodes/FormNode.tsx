@@ -65,10 +65,10 @@ export function FormNode({ id, data }: { id: string; data: Data }) {
                   <Draggable key={item} draggableId={item} index={index}>
                     {(provided) => (
                       <div
-                        className="item-container"
-                        ref={provided.innerRef}
-                        {...provided.dragHandleProps}
                         {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                        className="item-container"
                       >
                         {item}
                       </div>
