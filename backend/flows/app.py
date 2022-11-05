@@ -30,7 +30,7 @@ def flows():
         return jsonify({'id': str(result)})
 
 
-@app.route('/flows/<id>', methods=['GET', 'DELETE'])
+@app.route('/flows/<id>', methods=['GET', 'DELETE', 'PUT'])
 def flow(id):
     if request.method == 'GET':
         flow_query = mongo_api.collection.find_one(ObjectId(id))
@@ -48,6 +48,16 @@ def flow(id):
 
         mongo_api.collection.delete_one({'_id': ObjectId(id)})
         return 'Deleted.', 200
+
+
+    if request.method == 'PUT':
+        flow_query = mongo_api.collection.find_one(ObjectId(id))
+
+        if not flow_query:
+            return 'Not found', 404
+        
+        mongo_api.collection.update_one({'_id': ObjectId(id)}, {"$set": request.json})
+        return jsonify("Updated")
 
 
 @app.route('/flows/<id>/hash', methods=['GET'])
