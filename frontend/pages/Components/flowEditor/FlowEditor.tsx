@@ -1,24 +1,15 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import ReactFlow, {
-  applyEdgeChanges,
-  applyNodeChanges,
   Background,
   Controls,
   Edge,
   Node,
-  EdgeChange,
-  NodeChange,
-  Connection,
-  addEdge,
   ReactFlowInstance,
 } from "reactflow";
 import "reactflow/dist/style.css";
 
 import { SendMailNode } from "./nodes/SendMailNode";
-
-const initialNodes: Node[] = [];
-
-const initialEdges: Edge[] = [];
+import useStore from "./FlowStore";
 
 const rfStyle = {
   backgroundColor: "#B8CEFF",
@@ -29,27 +20,11 @@ const getId = () => `dndnode_${id++}`;
 
 const FlowEditor = () => {
   const reactFlowWrapper = useRef(null);
-
-  const [nodes, setNodes] = useState<Node[]>(initialNodes);
-  const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const nodeTypes = useMemo(() => ({ sendMail: SendMailNode }), []);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
-  const onNodesChange = useCallback(
-    (changes: NodeChange[]) =>
-      setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
-  );
-  const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) =>
-      setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
-  );
-
-  const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    []
-  );
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, addNode } =
+    useStore();
 
   const onDragOver = useCallback((event: any) => {
     event.preventDefault();
@@ -82,7 +57,7 @@ const FlowEditor = () => {
         data: { label: `${type} node` },
       };
 
-      setNodes((nds) => nds.concat(newNode));
+      addNode(newNode);
     },
     [reactFlowInstance]
   );
