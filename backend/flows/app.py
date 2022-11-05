@@ -1,11 +1,20 @@
 from flask import Flask, request, jsonify
+from flask_mail import Mail, Message
 from MongoAPI import MongoAPI
 from utils import parse_flow_object, hash_flow_object
 from bson import ObjectId
-
+import os
 
 # Setup clients for server and db
 app = Flask(__name__)
+
+app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER')
+app.config['MAIL_PORT'] = os.environ.get('MAIL_PORT')
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_USE_SSL'] = os.environ.get('MAIL_USE_SSL')
+
+mail_api = Mail(app)
 mongo_api = MongoAPI({'database': 'smarthack', 'collection': 'flows'})
 
 
@@ -68,6 +77,23 @@ def flow_hash(id):
         return 'Not found', 404
 
     return jsonify({'hash': hash_flow_object(flow_query)})
+
+
+@app.route('/mail', methods=['POST'])
+def send_email():
+    if request.method == 'POST':
+        mail_data = request.json
+
+        msg = Message(
+            mail_data.get('message_title'),
+            sender = mail_data.get('sender'),
+            recipients = mail_data.get('recipients')
+        )
+
+        msg.body = mail_data.get('message_body')
+        mail_api.send(msg)
+
+        return jsonify('Sent')
 
 
 if __name__ == "__main__":
