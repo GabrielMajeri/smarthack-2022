@@ -10,11 +10,11 @@ const Content = () => {
         <>
             <About />
 
-            <SectionOne />
+            {/* <SectionOne /> */}
 
-            <SectionTwo />
+            {/* <SectionTwo /> */}
 
-            <SectionThree />
+            {/* <SectionThree /> */}
 
             <SectionFour />
 

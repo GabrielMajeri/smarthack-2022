@@ -7,10 +7,10 @@ const SectionFive = () => {
     return (
         <section id="section-five">
             <Container>
-                <div style={{ marginBottom: 30 }}>
-                    <div style={{ textAlign: 'left' }}><Badge variant="filled" color="yellow">FAQs</Badge></div>
-                    <Text color="black">
-                        <Title order={1} style={{ marginTop: 10 }}>Woah, Frequently asked questions here</Title>
+                <div style={{ marginBottom: 10 }}>
+                    {/* <div style={{ textAlign: 'left' }}><Badge variant="filled" color="yellow">FAQs</Badge></div> */}
+                    <Text color="var(--custom-blue)">
+                        <Title order={1} style={{ marginTop: 10 }}>Întrebari frecvente</Title>
                     </Text>
                 </div>
 
