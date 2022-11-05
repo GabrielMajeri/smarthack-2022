@@ -1,9 +1,9 @@
-import { Text, Container, Anchor, MediaQuery, Button, Image, Grid, Center } from '@mantine/core';
+import { Text, Container, Anchor, MediaQuery, Button, Image, Grid, Center, useMantineTheme } from '@mantine/core';
 import { MdOutlineArrowDownward } from "react-icons/md";
 import { Link } from 'react-scroll';
 
 const About = () => {
-    //const theme = useMantineTheme();
+    const theme = useMantineTheme();
 
     return (
         <section id="about">
@@ -36,7 +36,7 @@ const About = () => {
 
                     <div className="buttons">
                         <Link to="section-four" smooth duration={500}>
-                            <Button color="yellow" rightIcon={<MdOutlineArrowDownward size={16} />} radius="lg" size="md">Despre noi</Button>
+                            <Button style={{ background: "var(--custom-red)" }} rightIcon={<MdOutlineArrowDownward size={16} />} radius="lg" size="md">Despre noi</Button>
                         </Link>
 
                         <Button variant="default" radius="lg" size="md">Sign in</Button>

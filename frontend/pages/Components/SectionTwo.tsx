@@ -1,7 +1,7 @@
-import { Title, Text, Container, Grid, Image, Button } from '@mantine/core';
+import { Title, Text, Container, Grid, Image, Button, useMantineTheme } from '@mantine/core';
 
 const SectionTwo = () => {
-    //const theme = useMantineTheme();
+    const theme = useMantineTheme();
 
     return (
         <section id="section-two">

@@ -1,10 +1,10 @@
-import { Button, Badge, Burger, Drawer, Code, Title, Anchor, Text } from '@mantine/core';
+import { Button, Badge, Burger, Drawer, Code, Title, Anchor, Text, useMantineTheme } from '@mantine/core';
 import { UnstyledButton, Group, Avatar } from '@mantine/core';
 import React from 'react';
 import { Link } from 'react-scroll';
 
 const Header = () => {
-    //const theme = useMantineTheme();
+    const theme = useMantineTheme();
     const [opened, setOpened] = React.useState(false);
     const title = opened ? 'Close navigation' : 'Open navigation';
 
@@ -12,14 +12,15 @@ const Header = () => {
         <header>
             <div className="content-desktop">
                 <div>
-                    <Badge size="lg" radius={10} color="yellow">A simple Mantine template</Badge>
+                    {/* <Badge size="lg" radius={10} color="yellow">A simple Mantine template</Badge> */}
                 </div>
                 <div className="navbar">
-                    <div className="navbar-item"><Link to="section-one" smooth duration={500}>Carousel</Link></div>
-                    <div className="navbar-item"><Link to="section-four" smooth duration={500}>Cards</Link></div>
-                    <div className="navbar-item"><Link to="section-five" smooth duration={500}>FAQS</Link></div>
+                    
+                    <div className="navbar-item"><Link to="section-four" smooth duration={500}>Ce facem?</Link></div>
+                    <div className="navbar-item"><Link to="section-five" smooth duration={500}>Întrebări frecvente</Link></div>
 
-                    <Button color="yellow" onClick={() => redirectToLink('https://mantine.dev/')}>Check out Mantine</Button>
+                    <Button style={{ background: "var(--custom-red)" }} onClick={() => redirectToLink('https://mantine.dev/')}>Conectare</Button>
+                    
                 </div>
             </div>
 
@@ -55,12 +56,12 @@ const Header = () => {
                         <div className="menu-items">
                             <Text>Contact</Text>
 
-                            <Anchor href="mailto:example@mail.com">
-                                example@mail.com
+                            <Anchor href="mailto: contact@autoflow.ro">
+                                contact@autoflow.ro
                             </Anchor>
                         </div>
 
-                        <Code color="yellow" style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: 15 }}>
+                        {/* <Code style={{ background: "var(--custom-red)", display: 'flex', flexDirection: 'column', gap: 6, padding: 15 }}>
                             Template made by
                             <Anchor href="https://github.com/Giuseppetm">
                                 <UnstyledButton>
@@ -73,7 +74,7 @@ const Header = () => {
                                     </Group>
                                 </UnstyledButton>
                             </Anchor>
-                        </Code>
+                        </Code> */}
                     </div>
                 </Drawer>
             </div>

@@ -1,18 +1,18 @@
 #about {
-    min-height: 100vh;
-    height: 100vh;
+    // min-height: 70vh;
+    height: 97vh;
     display: flex;
     align-items: center;
     padding-top: 0px;
 
     .about-content {
         text-align: center;
-        background-color: rgba(#fff4d5, 0.60);
+        background-color: var(--custom-light-light-blue);
+        background-image: url('/about.png');
         padding: 160px 120px;
-        border-radius: 25px;
+        border-radius: 20px;
         
         .title {
-            font-family: 'Montserrat', sans-serif;
             color: rgb(45, 45, 45);
             font-size: 7vmin;
             letter-spacing: 2px;

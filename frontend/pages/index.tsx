@@ -1,6 +1,6 @@
 // import Head from "next/head";
 // import Image from "next/image";
-// import styles from "../styles/Home.module.css";
+// import styles from "../styles/Home.module.css";\
 
 import Content from './Views/Content';
 import Header from './Components/Header';
@@ -10,7 +10,8 @@ import { TypographyStylesProvider } from '@mantine/core';
 
 export default function Home() {
   return (
-    <MantineProvider>
+    <MantineProvider theme ={{fontFamily: "Microsoft YaHei"}} withGlobalStyles>
+
     <TypographyStylesProvider>
       <Header />
       <Content />
