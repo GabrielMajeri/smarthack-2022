@@ -38,7 +38,7 @@ export default () => {
       </div>
       <div
         style={style}
-        onDragStart={(event) => onDragStart(event, "sendMail")}
+        onDragStart={(event) => onDragStart(event, "formNode")}
         draggable
       >
         Completeaza formular

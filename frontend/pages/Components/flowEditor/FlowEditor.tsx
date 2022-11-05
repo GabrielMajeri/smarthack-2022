@@ -10,17 +10,17 @@ import "reactflow/dist/style.css";
 
 import { SendMailNode } from "./nodes/SendMailNode";
 import useStore from "./FlowStore";
-
-const rfStyle = {
-  backgroundColor: "#B8CEFF",
-};
+import { FormNode } from "./nodes/FormNode";
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const FlowEditor = () => {
   const reactFlowWrapper = useRef(null);
-  const nodeTypes = useMemo(() => ({ sendMail: SendMailNode }), []);
+  const nodeTypes = useMemo(
+    () => ({ sendMail: SendMailNode, formNode: FormNode }),
+    []
+  );
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   const { nodes, edges, onNodesChange, onEdgesChange, onConnect, addNode } =
