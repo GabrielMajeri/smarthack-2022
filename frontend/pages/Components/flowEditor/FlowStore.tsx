@@ -32,6 +32,7 @@ type RFState = {
   removeNode: any;
   updateNodeData: any;
   saveFlow: any;
+  reset: any;
 };
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
@@ -39,6 +40,13 @@ const useStore = create<RFState>((set, get) => ({
   currentFlowId: "",
   nodes: [],
   edges: [],
+  reset: () => {
+    set({
+      currentFlowId: "",
+      nodes: [],
+      edges: [],
+    });
+  },
   setCurrentFlowId: (id: string) => {
     set({
       currentFlowId: id,

@@ -20,6 +20,7 @@ export default function AppShellDemo() {
   const [opened, setOpened] = useState(false);
   const [flowData, setFlowData] = useState(null);
   const router = useRouter();
+  const { reset } = useStore();
   const { id } = router.query;
 
   const { nodes, edges, addNode, addEdge, saveFlow, setCurrentFlowId } =
@@ -48,6 +49,19 @@ export default function AppShellDemo() {
         }
       });
   }, [id]);
+
+  useEffect(() => {
+    const exitingFunction = () => {
+      reset();
+    };
+
+    router.events.on("routeChangeStart", exitingFunction);
+
+    return () => {
+      console.log("unmounting component...");
+      router.events.off("routeChangeStart", exitingFunction);
+    };
+  }, []);
 
   if (flowData == null) {
     return <>Loading...</>;
