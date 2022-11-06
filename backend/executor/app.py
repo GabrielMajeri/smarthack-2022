@@ -107,7 +107,7 @@ def execute_node():
             'sender': 'Autoflow Executor',
             'recipients': [destinationAddress]
         }
-        # res = requests.post(FLOWS_ENDPOINT_URL + '/mail', json=params)
+        res = requests.post(FLOWS_ENDPOINT_URL + '/mail', json=params)
         # TODO check response
         print(res)
     else:
