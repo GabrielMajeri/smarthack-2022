@@ -84,13 +84,12 @@ def flow_hash(id):
 @app.route('/flows/<id>/instances', methods=['GET', 'POST'])
 def flows_instances(id):
     if request.method == 'GET':
-        print('s')
-        flows_query = list(mongo_api_2.collection.find({'parent_id': ObjectId(id)}))
+        flows_query = list(mongo_api_2.collection.find({"parent_id": id}))
         flows = []
 
         for flow in flows_query:
             flows.append(parse_flow_object(flow))
-        print(flows)
+
         return jsonify(flows)
 
     if request.method == 'POST':
