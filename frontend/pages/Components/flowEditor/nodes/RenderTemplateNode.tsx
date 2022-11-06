@@ -1,7 +1,6 @@
-import { Group, CloseButton } from "@mantine/core";
-import { useCallback } from "react";
+import { Center, FileInput, Button } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import { Handle, Position } from "reactflow";
-import useStore, { useNodeData } from "../FlowStore";
 import NodeHeader from "./NodeHeader";
 
 const handleStyle = {
@@ -16,15 +15,22 @@ const handleStyle = {
 export type Data = { approverAddress: string };
 
 export function RenderTemplateNode({ id, data }: { id: string; data: Data }) {
-  const { updateNodeData } = useStore();
+  const form = useForm();
 
-  const onChange = useCallback((evt: any) => {
-    const email = evt.target.value;
-    updateNodeData(id, { destinationAddress: email });
-  }, []);
+  const handleFileUpload = () => {
+    const file = form.values.template as any;
 
-  const nodeData = useNodeData<Data>(id);
-  console.log(nodeData);
+    const data = new FormData();
+    data.append("file", file, file.name);
+
+    const requestOptions = {
+      method: "POST",
+      body: data,
+    };
+    fetch(`/api/documents`, requestOptions).then((res) =>
+      console.log(res.status)
+    );
+  };
 
   return (
     <div style={handleStyle}>
@@ -32,14 +38,16 @@ export function RenderTemplateNode({ id, data }: { id: string; data: Data }) {
       <div>
         <NodeHeader title="Generare document din șablon" id={id} />
 
-        <label htmlFor="approverAddress">E-mail decident: </label>
-        <br></br>
-        <input
-          id="approverAddress"
-          name="approverAddress"
-          value={data.approverAddress || nodeData?.approverAddress}
-          onChange={onChange}
+        <FileInput
+          label="Document template"
+          placeholder="Selectați fișierul șablon"
+          withAsterisk
+          {...form.getInputProps("template")}
         />
+
+        <Center style={{ paddingTop: "0.5em" }}>
+          <Button onClick={handleFileUpload}>Încarcă</Button>
+        </Center>
       </div>
       <Handle type="source" position={Position.Right} id="b" />
     </div>

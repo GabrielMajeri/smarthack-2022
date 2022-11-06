@@ -3,12 +3,12 @@ from flask_mysqldb import MySQL
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv, find_dotenv
 from docxtpl import DocxTemplate
-from docx2pdf import convert as pdf_convert
+# from docx2pdf import convert as pdf_convert
 import os
 import uuid
 import hashlib
 import pypandoc
-import aspose.words as aw
+# import aspose.words as aw
 
 
 load_dotenv(find_dotenv())
@@ -125,7 +125,7 @@ def generate_template(id):
 
         if not data:
             return 'Not found', 404
-        
+
         try:
             doc = DocxTemplate(upload_folder + data[0]['file_path'])
         except:
@@ -164,14 +164,15 @@ def generate_pdf(id):
             return 'Not found', 404
 
         f_uuid = str(uuid.uuid4())
-        
+
         try:
-            pypandoc.convert_file(upload_folder + data[0]['file_path'], 'pdf', outputfile=upload_folder + f"{f_uuid}.pdf")
+            pypandoc.convert_file(
+                upload_folder + data[0]['file_path'], 'pdf', outputfile=upload_folder + f"{f_uuid}.pdf")
         except:
             return "Could not convert file", 400
-        
+
         f_size = os.stat(upload_folder + f_uuid + '.pdf').st_size
-        
+
         cursor = mysql_api.connection.cursor()
         sql_q = 'INSERT INTO documents (name, file_path, size) VALUES (%s, %s, %s)'
 
@@ -179,10 +180,10 @@ def generate_pdf(id):
         mysql_api.connection.commit()
 
         #doc = aw.Document(upload_folder + data[0]['file_path'])
-        #doc.save("Output.pdf")
+        # doc.save("Output.pdf")
 
         return jsonify({'id': cursor.lastrowid})
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5002)
+    app.run(debug=True, host='::', port=5002)

@@ -52,7 +52,7 @@ export default () => {
       </div>
       <div
         style={style}
-        onDragStart={(event) => onDragStart(event, "approvalNode")}
+        onDragStart={(event) => onDragStart(event, "renderTemplateNode")}
         draggable
       >
         Generare document din sablon
