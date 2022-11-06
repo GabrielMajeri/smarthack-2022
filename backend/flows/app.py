@@ -4,6 +4,7 @@ from MongoAPI import MongoAPI
 from utils import parse_flow_object, hash_flow_object
 from bson import ObjectId
 import os
+import datetime
 
 # Setup clients for server and db
 app = Flask(__name__)
@@ -16,6 +17,7 @@ app.config['MAIL_USE_SSL'] = os.environ.get('MAIL_USE_SSL')
 
 mail_api = Mail(app)
 mongo_api = MongoAPI({'database': 'smarthack', 'collection': 'flows'})
+mongo_api_2 = MongoAPI({'database': 'smarthack', 'collection': 'flows_instances'})
 
 
 @app.route('/')
@@ -77,6 +79,26 @@ def flow_hash(id):
         return 'Not found', 404
 
     return jsonify({'hash': hash_flow_object(flow_query)})
+
+
+@app.route('/flows/<id>/instances', methods=['GET', 'POST'])
+def flows_instances(id):
+    if request.method == 'GET':
+        print('s')
+        flows_query = list(mongo_api_2.collection.find({'parent_id': ObjectId(id)}))
+        flows = []
+
+        for flow in flows_query:
+            flows.append(parse_flow_object(flow))
+        print(flows)
+        return jsonify(flows)
+
+    if request.method == 'POST':
+        request_data = request.json
+        request_data['created'] = datetime.datetime.timestamp(datetime.datetime.now())
+
+        result = mongo_api_2.collection.insert_one(request.json).inserted_id
+        return jsonify({'id': str(result)})
 
 
 @app.route('/mail', methods=['POST'])
