@@ -97,9 +97,31 @@ def flows_instances(id):
         request_data = request.json
         request_data['createdAt'] = datetime.datetime.timestamp(
             datetime.datetime.now())
+        request_data['status'] = 'created'
 
         result = mongo_api_2.collection.insert_one(request.json).inserted_id
         return jsonify({'id': str(result)})
+
+
+@app.get('/flows/<parentFlowId>/instances/<id>')
+def get_flow_instance(parentFlowId, id):
+    flow_instance_query = mongo_api_2.collection.find(
+        {"parentFlowId": parentFlowId, "id": id})
+    flow = parse_flow_object(flow_instance_query)
+    return jsonify(flow)
+
+
+@app.put('/flows/<parentFlowId>/instances/<id>')
+def update_flow_instance(_parentFlowId, id):
+    flow_instances_query = mongo_api_2.collection.find_one(ObjectId(id))
+
+    if not flow_instances_query:
+        return 'Not found', 404
+
+    mongo_api_2.collection.update_one(
+        {'_id': ObjectId(id)}, {"$set": request.json})
+
+    return jsonify("Updated")
 
 
 @app.route('/mail', methods=['POST'])

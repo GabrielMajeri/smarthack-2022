@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
+  EXECUTOR_MICROSERVICE_URL,
   FLOWS_MICROSERVICE_URL,
   FORMS_MICROSERVICE_URL,
 } from "../../../utils/api";
@@ -43,15 +44,16 @@ export default async function handler(
   const { id: flowInstanceId } = await response.json();
   console.log("Created new flow instance with ID %s", flowInstanceId);
 
+  const formFields = {
+    ...body,
+    flowId: undefined,
+    formNodeId: undefined,
+  };
   const formDataDto = {
     flowId,
     flowInstanceId,
     formNodeId,
-    data: {
-      ...body,
-      flowId: undefined,
-      formNodeId: undefined,
-    },
+    data: formFields,
   };
   requestOptions = {
     method: "POST",
@@ -75,6 +77,27 @@ export default async function handler(
 
   const { id: formOutputId } = await response.json();
   console.log("Saved form data with ID %s", formOutputId);
+
+  const nodeExecutionFinishDto = {
+    flowId,
+    flowInstanceId,
+    nodeId: formNodeId,
+    result: {
+      status: "success",
+      output: formFields,
+    },
+  };
+  requestOptions = {
+    method: "POST",
+    body: JSON.stringify(nodeExecutionFinishDto),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  response = await fetch(
+    `${EXECUTOR_MICROSERVICE_URL}/executor/onNodeExecutionFinish`,
+    requestOptions
+  );
 
   res.status(200).send("OK");
 }
