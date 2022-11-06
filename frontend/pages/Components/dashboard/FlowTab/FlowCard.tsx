@@ -1,13 +1,24 @@
 import { Badge, Button, Card, Grid, Group, Image, Text } from "@mantine/core";
+import Router, { useRouter } from "next/router";
 
-interface FlowCardData {
+export type FlowCardData = {
   image: string;
   name: string;
-}
-const FlowCard = (data: FlowCardData) => {
+  id: string;
+};
+const FlowCard = ({ data }: { data: FlowCardData }) => {
+  const router = useRouter();
   return (
     <Grid.Col span={2}>
-      <Card shadow="sm" p="lg" radius="md" withBorder>
+      <Card
+        shadow="sm"
+        p="lg"
+        radius="md"
+        withBorder
+        onClick={() => {
+          router.push("/flows/" + data.id);
+        }}
+      >
         <Card.Section>
           <Image
             src={
