@@ -34,12 +34,14 @@ export default function AppShellDemo() {
       .then((json) => {
         setFlowData(json);
         console.log(json.date);
-        json.date.nodes.map((node: Node) => {
-          addNode(node);
-        });
-        json.date.edges.map((edge: Edge) => {
-          addEdge(edge);
-        });
+        if (json.date.nodes && json.date.edges) {
+          json.date.nodes.map((node: Node) => {
+            addNode(node);
+          });
+          json.date.edges.map((edge: Edge) => {
+            addEdge(edge);
+          });
+        }
       });
   }, [id]);
 
