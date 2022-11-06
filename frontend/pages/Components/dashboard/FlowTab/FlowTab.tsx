@@ -12,7 +12,6 @@ const FlowTab = () => {
         return response.json();
       })
       .then((json) => {
-        console.log(json);
         setCards(
           json.map((el: any) => {
             return { id: el.id, name: el.name };

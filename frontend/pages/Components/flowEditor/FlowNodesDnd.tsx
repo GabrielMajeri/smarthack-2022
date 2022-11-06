@@ -31,7 +31,7 @@ export default () => {
       </div> */}
       <div
         style={style}
-        onDragStart={(event) => onDragStart(event, "sendMail")}
+        onDragStart={(event) => onDragStart(event, "sendMailNode")}
         draggable
       >
         Trimite e-mail

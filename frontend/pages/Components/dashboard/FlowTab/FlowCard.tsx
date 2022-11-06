@@ -18,6 +18,7 @@ const FlowCard = ({ data }: { data: FlowCardData }) => {
         onClick={() => {
           router.push("/flows/" + data.id);
         }}
+        style={{ cursor: "pointer" }}
       >
         <Card.Section>
           <Image

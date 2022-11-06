@@ -1,17 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import ReactFlow, {
-  Background,
-  Controls,
-  Edge,
-  Node,
-  ReactFlowInstance,
-} from "reactflow";
+import ReactFlow, { Background, Controls, ReactFlowInstance } from "reactflow";
 import "reactflow/dist/style.css";
 
 import { SendMailNode } from "./nodes/SendMailNode";
 import useStore from "./FlowStore";
 import { FormNode } from "./nodes/FormNode";
-import { useRouter } from "next/router";
 import uuid from "react-uuid";
 
 const getId = () => uuid();
@@ -19,14 +12,13 @@ const getId = () => uuid();
 const FlowEditor = () => {
   const reactFlowWrapper = useRef(null);
   const nodeTypes = useMemo(
-    () => ({ sendMail: SendMailNode, formNode: FormNode }),
+    () => ({ sendMailNode: SendMailNode, formNode: FormNode }),
     []
   );
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   const { nodes, edges, onNodesChange, onEdgesChange, onConnect, addNode } =
     useStore();
-  console.log("nn", nodes);
   const onDragOver = useCallback((event: any) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
@@ -56,7 +48,7 @@ const FlowEditor = () => {
         dragHandle: ".custom-drag-handle",
         sourcePosition: "right",
         targetPosition: "left",
-        data: { label: `${type} node` },
+        data: { nodeType: type },
       };
 
       addNode(newNode);

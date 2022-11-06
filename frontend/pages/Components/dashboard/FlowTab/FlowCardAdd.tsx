@@ -30,7 +30,14 @@ const FlowCard = ({ onAdd }: { onAdd: () => void }) => {
   };
   return (
     <Grid.Col span={2}>
-      <Card onClick={addFlow} shadow="sm" p="lg" radius="md" withBorder>
+      <Card
+        onClick={addFlow}
+        shadow="sm"
+        p="lg"
+        radius="md"
+        style={{ cursor: "pointer" }}
+        withBorder
+      >
         <Card.Section>
           <Center>
             <IconPlus height={160} size={48} />

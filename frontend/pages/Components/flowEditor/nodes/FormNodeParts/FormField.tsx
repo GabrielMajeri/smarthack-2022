@@ -5,10 +5,9 @@ import {
   Group,
   Select,
   TextInput,
-  Text,
 } from "@mantine/core";
 
-const FormInput = () => {
+const FormField = () => {
   return (
     <Card
       style={{
@@ -40,4 +39,4 @@ const FormInput = () => {
   );
 };
 
-export default FormInput;
+export default FormField;

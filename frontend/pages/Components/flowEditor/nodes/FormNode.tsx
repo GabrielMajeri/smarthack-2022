@@ -3,15 +3,8 @@ import { Handle, Position } from "reactflow";
 import useStore from "../FlowStore";
 import NodeHeader from "./NodeHeader";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import {
-  Textarea,
-  Text,
-  TextInput,
-  Button,
-  Center,
-  Group,
-} from "@mantine/core";
-import FormInput from "./FormNodeParts/FormInput";
+import { Textarea, Text, TextInput, Button, Card, Group } from "@mantine/core";
+import FormField from "./FormNodeParts/FormField";
 import { Data } from "./SendMailNode";
 import { IconLink, IconPlus } from "@tabler/icons";
 import uuid from "react-uuid";
@@ -32,8 +25,6 @@ const handleStyle = {
 // export type Data = { formFields: Input[] };
 
 export function FormNode({ id, data }: { id: string; data: Data }) {
-  const { updateNodeMail } = useStore();
-
   const defaultList = ["A", "B"];
   // React state to track order of items
   const [itemList, setItemList] = useState(defaultList);
@@ -52,27 +43,22 @@ export function FormNode({ id, data }: { id: string; data: Data }) {
     setItemList(updatedList);
   };
 
-  const onChange = useCallback((evt: any) => {
-    const email = evt.target.value;
-    updateNodeMail(id, email);
-  }, []);
-
   const addFormInput = () => {
-    console.log("hi");
     setItemList([...itemList, uuid()]);
     console.log(itemList);
   };
 
   return (
     <div style={handleStyle}>
-      <Handle type="target" position={Position.Left} />
       <div>
-        <span className="custom-drag-handle">
-          <NodeHeader
-            className="custom-drag-handle"
-            title={"Generează formular"}
-          />
-        </span>
+        <NodeHeader title="Generează formular" id={id} />
+
+        <TextInput
+          label="Slug / componentă link"
+          placeholder="Introdu identificatorul acestui formular, care va apărea în link"
+          withAsterisk
+        />
+
         <TextInput
           style={{ width: 500 }}
           placeholder="Titlu"
@@ -87,13 +73,11 @@ export function FormNode({ id, data }: { id: string; data: Data }) {
           minRows={2}
           maxRows={4}
         />
-        <TextInput
-          label="Nume link"
-          placeholder="Introdu numele link-ului"
-          withAsterisk
-        />
 
-        <Text fz="sm">Câmpuri</Text>
+        <Text fz="sm" fw={700} style={{ marginTop: "1em" }}>
+          Câmpuri
+        </Text>
+
         <DragDropContext onDragEnd={handleDrop}>
           <Droppable droppableId="list-container">
             {(provided) => (
@@ -111,7 +95,7 @@ export function FormNode({ id, data }: { id: string; data: Data }) {
                         ref={provided.innerRef}
                         className="item-container"
                       >
-                        <FormInput></FormInput>
+                        <FormField />
                       </div>
                     )}
                   </Draggable>

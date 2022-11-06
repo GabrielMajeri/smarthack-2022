@@ -1,6 +1,7 @@
-import { useCallback, useState } from "react";
+import { Group, CloseButton } from "@mantine/core";
+import { useCallback } from "react";
 import { Handle, Position } from "reactflow";
-import useStore from "../FlowStore";
+import useStore, { useNodeData } from "../FlowStore";
 import NodeHeader from "./NodeHeader";
 
 const handleStyle = {
@@ -12,29 +13,31 @@ const handleStyle = {
   background: "white",
 };
 
-export type Data = { destination: string };
+export type Data = { destinationAddress: string };
 
 export function SendMailNode({ id, data }: { id: string; data: Data }) {
-  const { updateNodeMail } = useStore();
+  const { updateNodeData } = useStore();
+
   const onChange = useCallback((evt: any) => {
     const email = evt.target.value;
-    updateNodeMail(id, email);
+    updateNodeData(id, { destinationAddress: email });
   }, []);
+
+  const nodeData = useNodeData<Data>(id);
+  console.log(nodeData);
 
   return (
     <div style={handleStyle}>
       <Handle type="target" position={Position.Left} />
       <div>
-        <span className="custom-drag-handle">
-          <NodeHeader className="custom-drag-handle" title={"Trimite e-mail"} />
-        </span>
+        <NodeHeader title="Trimite e-mail" id={id} />
 
-        <label htmlFor="text">E-mail: </label>
+        <label htmlFor="destinationAddress">E-mail: </label>
         <br></br>
         <input
-          id="text"
-          name="text"
-          value={data.destination}
+          id="destinationAddress"
+          name="destinationAddress"
+          value={data.destinationAddress || nodeData?.destinationAddress}
           onChange={onChange}
         />
       </div>
