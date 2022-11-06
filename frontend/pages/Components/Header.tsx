@@ -17,6 +17,7 @@ import {
   signIn,
   signOut as nextAuthSignOut,
 } from "next-auth/react";
+import Router from "next/router";
 
 const Header = () => {
   const theme = useMantineTheme();
@@ -140,7 +141,7 @@ const Header = () => {
 
             <Button
               style={{ background: "var(--custom-red)" }}
-              onClick={() => signIn()}
+              onClick={() => Router.push("/login-form")}
             >
               Conectare
             </Button>

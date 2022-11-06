@@ -18,6 +18,6 @@ module.exports = () => {
   return {
     reactStrictMode: false,
     swcMinify: true,
-    rewrites
+    rewrites,
   };
 };
