@@ -15,6 +15,8 @@ import {
   Paper,
 } from "@mantine/core";
 
+import { FLOWS_MICROSERVICE_URL } from "../../../utils/api";
+
 const FORM_DATA = {
   title: "Solicitare eliberare adeverință de student",
   description:
@@ -25,21 +27,21 @@ const FORM_DATA = {
       type: "TextField",
       label: "Nume de familie",
       placeholder: "Cutărescu",
-      required: true,
+      required: false,
     },
     {
       name: "last_name",
       type: "TextField",
       label: "Prenume",
       placeholder: "Ion",
-      required: true,
+      required: false,
     },
     {
       name: "reason",
       type: "SelectField",
       label: "Motivul pentru care se solicită emiterea adeverinței",
       defaultValue: "JOB",
-      required: true,
+      required: false,
       options: [
         { value: "JOB", label: "Să îmi servească la locul de muncă" },
         {
@@ -52,7 +54,7 @@ const FORM_DATA = {
       name: "consent",
       type: "CheckBoxField",
       label: "Sunt de acord cu prelucrarea datelor personale",
-      required: true,
+      required: false,
     },
   ],
 };
@@ -151,13 +153,23 @@ const Form = () => {
   const router = useRouter();
   const { organizationSlug, formSlug } = router.query;
 
+  const flowId = 1;
+  const formId = 1;
+
   const initialValues = useMemo(() => {
-    return FORM_DATA.fields.reduce((values, field) => {
+    const hiddenFieldsValues = {
+      flowId,
+      formId,
+    };
+
+    const fieldsInitialValues = FORM_DATA.fields.reduce((values, field) => {
       return {
         ...values,
         [field.name]: field.defaultValue ?? "",
       };
     }, {});
+
+    return { ...hiddenFieldsValues, ...fieldsInitialValues };
   }, [FORM_DATA]);
 
   const form = useForm({ initialValues });
@@ -170,7 +182,7 @@ const Form = () => {
 
     fetch("/api/forms/submit", requestOptions).then((response) => {
       if (response.ok) {
-        Router.push("/forms/thanks");
+        // Router.push("/forms/thanks");
       }
     });
   }, []);
@@ -184,6 +196,9 @@ const Form = () => {
             <p>{FORM_DATA.description}</p>
           </div>
           <form onSubmit={form.onSubmit(handleSubmit)}>
+            <input type="hidden" {...form.getInputProps("flowId")} />
+            <input type="hidden" {...form.getInputProps("formId")} />
+
             <Divider
               label="Completează formularul"
               labelPosition="center"
@@ -234,3 +249,13 @@ const Form = () => {
 };
 
 export default Form;
+
+export async function getServerSideProps() {
+  const response = await fetch(`${FLOWS_MICROSERVICE_URL}/flows`);
+  const data = await response.json();
+
+  console.log(data);
+
+  // Pass data to the page via props
+  return { props: { data } };
+}
