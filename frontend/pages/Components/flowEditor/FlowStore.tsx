@@ -12,6 +12,7 @@ import {
   OnConnect,
   applyNodeChanges,
   applyEdgeChanges,
+  MarkerType,
 } from "reactflow";
 
 import { Data as MailNodeData } from "./nodes/SendMailNode";
@@ -21,6 +22,8 @@ type MyNode = Node | SendMailNodeType;
 type RFState = {
   nodes: MyNode[];
   edges: Edge[];
+  currentFlowId: string;
+  setCurrentFlowId: any;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
@@ -28,12 +31,19 @@ type RFState = {
   addEdge: any;
   removeNode: any;
   updateNodeData: any;
+  saveFlow: any;
 };
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
 const useStore = create<RFState>((set, get) => ({
+  currentFlowId: "",
   nodes: [],
   edges: [],
+  setCurrentFlowId: (id: string) => {
+    set({
+      currentFlowId: id,
+    });
+  },
   onNodesChange: (changes: NodeChange[]) => {
     set({
       nodes: applyNodeChanges(changes, get().nodes),
@@ -48,6 +58,26 @@ const useStore = create<RFState>((set, get) => ({
     set({
       edges: addEdge(connection, get().edges),
     });
+  },
+  saveFlow: (id: string) => {
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        date: {
+          nodes: get().nodes,
+          edges: get().edges,
+        },
+      }),
+    };
+
+    fetch("/api/flows/" + get().currentFlowId, requestOptions)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        console.log(json);
+      });
   },
   addNode: (newNode: Node) => {
     set({
@@ -69,8 +99,18 @@ const useStore = create<RFState>((set, get) => ({
   },
   addEdge: (newEdge: Edge) => {
     set({
-      edges: get().edges.concat(newEdge),
+      edges: get().edges.concat({
+        ...newEdge,
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          width: 30,
+          height: 30,
+        },
+        animated: true,
+        style: { color: "red!important" },
+      }),
     });
+    console.log(get().edges);
   },
   updateNodeData<TData>(nodeId: string, data: TData) {
     set({

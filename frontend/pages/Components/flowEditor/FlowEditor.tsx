@@ -6,13 +6,22 @@ import { SendMailNode } from "./nodes/SendMailNode";
 import useStore from "./FlowStore";
 import { FormNode } from "./nodes/FormNode";
 import uuid from "react-uuid";
+import { ApprovalNode } from "./nodes/ApprovalNode";
+import { RenderTemplateNode } from "./nodes/RenderTemplateNode";
+import { ManualStartNode } from "./nodes/ManualStartNode";
 
 const getId = () => uuid();
 
 const FlowEditor = () => {
   const reactFlowWrapper = useRef(null);
   const nodeTypes = useMemo(
-    () => ({ sendMailNode: SendMailNode, formNode: FormNode }),
+    () => ({
+      sendMailNode: SendMailNode,
+      formNode: FormNode,
+      approvalNode: ApprovalNode,
+      renderTemplateNode: RenderTemplateNode,
+      manualStartNode: ManualStartNode,
+    }),
     []
   );
   const [reactFlowInstance, setReactFlowInstance] = useState(null);

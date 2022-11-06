@@ -43,6 +43,27 @@ export default () => {
       >
         Completeaza formular
       </div>
+      <div
+        style={style}
+        onDragStart={(event) => onDragStart(event, "approvalNode")}
+        draggable
+      >
+        Trimite cerere de aprobare
+      </div>
+      <div
+        style={style}
+        onDragStart={(event) => onDragStart(event, "approvalNode")}
+        draggable
+      >
+        Generare document din sablon
+      </div>
+      <div
+        style={style}
+        onDragStart={(event) => onDragStart(event, "manualStartNode")}
+        draggable
+      >
+        Start manual
+      </div>
     </>
   );
 };

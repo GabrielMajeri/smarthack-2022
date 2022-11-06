@@ -6,7 +6,7 @@ export type FlowCardData = {
   name: string;
   id: string;
 };
-const FlowCard = ({ data }: { data: FlowCardData }) => {
+const FlowCard = ({ data, index }: { data: FlowCardData; index: number }) => {
   const router = useRouter();
   return (
     <Grid.Col span={2}>
@@ -25,14 +25,14 @@ const FlowCard = ({ data }: { data: FlowCardData }) => {
             src={
               data.image
                 ? data.image
-                : "https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+                : "https://doodleipsum.com/600x400/abstract&n=" + data.id
             }
             height={160}
           />
         </Card.Section>
 
         <Group position="apart" mt="md" mb="xs">
-          <Text weight={500}>{data.name ? data.name : "Untitled Flow"}</Text>
+          <Text weight={500}>{data.name}</Text>
         </Group>
       </Card>
     </Grid.Col>

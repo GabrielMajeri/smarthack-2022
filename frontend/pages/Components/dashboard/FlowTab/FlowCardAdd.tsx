@@ -10,12 +10,12 @@ import {
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons";
 
-const FlowCard = ({ onAdd }: { onAdd: () => void }) => {
+const FlowCard = ({ onAdd, index }: { onAdd: () => void; index: number }) => {
   const addFlow = () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: "Flow nou", date: "" }),
+      body: JSON.stringify({ name: "Flow " + (index + 1), date: "" }),
     };
 
     fetch("/api/flows/", requestOptions)

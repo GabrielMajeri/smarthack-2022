@@ -6,12 +6,14 @@ import {
   Navbar,
   Text,
   useMantineTheme,
+  Image,
 } from "@mantine/core";
 import FlowEditor from "../Components/flowEditor/FlowEditor";
 import FlowNodesDnd from "../Components/flowEditor/FlowNodesDnd";
 import { useRouter } from "next/router";
 import useStore from "../Components/flowEditor/FlowStore";
 import { Edge } from "reactflow";
+import { IconDeviceFloppy } from "@tabler/icons";
 
 export default function AppShellDemo() {
   const theme = useMantineTheme();
@@ -20,11 +22,13 @@ export default function AppShellDemo() {
   const router = useRouter();
   const { id } = router.query;
 
-  const { nodes, edges, addNode, addEdge } = useStore();
+  const { nodes, edges, addNode, addEdge, saveFlow, setCurrentFlowId } =
+    useStore();
   useEffect(() => {
     if (!id) {
       return;
     }
+    setCurrentFlowId(id);
 
     fetch(`/api/flows/` + id)
       .then((response) => {
@@ -49,27 +53,27 @@ export default function AppShellDemo() {
     return <>Loading...</>;
   }
 
-  const saveFlow = () => {
-    console.log("saving...");
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        date: {
-          nodes: nodes,
-          edges: edges,
-        },
-      }),
-    };
+  // const saveFlow = () => {
+  //   console.log("saving...");
+  //   const requestOptions = {
+  //     method: "PUT",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({
+  //       date: {
+  //         nodes: nodes,
+  //         edges: edges,
+  //       },
+  //     }),
+  //   };
 
-    fetch("/api/flows/" + id, requestOptions)
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        console.log(json);
-      });
-  };
+  //   fetch("/api/flows/" + id, requestOptions)
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((json) => {
+  //       console.log(json);
+  //     });
+  // };
   return (
     <AppShell
       styles={{
@@ -89,10 +93,25 @@ export default function AppShellDemo() {
           hidden={!opened}
           width={{ sm: 200, lg: 300 }}
         >
-          <Text style={{ paddingBottom: "10px" }}>{flowData.name}</Text>
+          <Image src="/logo.png" style={{ width: "50%" }} />
+
+          <Text style={{ paddingBottom: "10px" }}>
+            <b>Editare:</b> {flowData.name}
+          </Text>
           <Divider></Divider>
           <FlowNodesDnd />
-          <Button onClick={saveFlow}>Save</Button>
+          <div style={{ height: "100%" }} />
+          <Button
+            onClick={() => {
+              saveFlow(id);
+            }}
+          >
+            <IconDeviceFloppy
+              size={18}
+              style={{ padding: "5px" }}
+            ></IconDeviceFloppy>
+            Salvează
+          </Button>
         </Navbar>
       }
     >

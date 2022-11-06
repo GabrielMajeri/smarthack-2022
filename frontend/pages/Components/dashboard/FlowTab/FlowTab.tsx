@@ -27,10 +27,15 @@ const FlowTab = () => {
   return (
     <>
       <Grid>
-        {cards.map((card: FlowCardData) => {
+        {cards.map((card: FlowCardData, index) => {
           return <FlowCard data={card} key={card.id}></FlowCard>;
         })}
-        <FlowCardAdd onAdd={fetchData} />
+        <FlowCardAdd
+          index={cards.length}
+          onAdd={() => {
+            fetchData();
+          }}
+        />
       </Grid>
     </>
   );
