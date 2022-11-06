@@ -1,8 +1,13 @@
+import { Container, Paper, Title, Text } from "@mantine/core";
+
 const FormsThanks = () => (
-  <div>
-    <h1>Formular remis</h1>
-    <p>Mulțumim că ați completat formularul!</p>
-  </div>
+  <Container size="md">
+    <Paper radius="md" p="xl" withBorder>
+      <Title order={1}>Formular remis</Title>
+      <br />
+      <Text fz="lg">Mulțumim că ați completat formularul!</Text>
+    </Paper>
+  </Container>
 );
 
 export default FormsThanks;

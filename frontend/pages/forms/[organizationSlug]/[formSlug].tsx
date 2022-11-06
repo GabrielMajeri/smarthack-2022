@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from "react";
-import Router, { useRouter } from "next/router";
+import Router from "next/router";
+import Head from "next/head";
 
 import { useForm } from "@mantine/form";
 import {
@@ -13,6 +14,7 @@ import {
   Stack,
   Select,
   Paper,
+  Title,
 } from "@mantine/core";
 
 import { FLOWS_MICROSERVICE_URL } from "../../../utils/api";
@@ -214,11 +216,14 @@ const Form = ({ flow, formData }: FormProps) => {
   }, []);
 
   return (
-    <Container fluid>
+    <Container size="md">
+      <Head>
+        <title>{formData.title} - Formular - AutoFlow</title>
+      </Head>
       <Paper radius="md" p="xl" withBorder>
         <main>
           <div>
-            <h1>{formData.title}</h1>
+            <Title order={1}>{formData.title}</Title>
             <p>{formData.description}</p>
           </div>
           <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -226,7 +231,7 @@ const Form = ({ flow, formData }: FormProps) => {
             <input type="hidden" {...form.getInputProps("formId")} />
 
             <Divider
-              label="Completează formularul"
+              label="Completează formularul de mai jos"
               labelPosition="center"
               my="lg"
             />

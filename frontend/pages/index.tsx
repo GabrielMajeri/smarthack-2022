@@ -1,4 +1,4 @@
-// import Head from "next/head";
+import Head from "next/head";
 // import Image from "next/image";
 // import styles from "../styles/Home.module.css";\
 
@@ -12,6 +12,9 @@ export default function Home() {
   return (
     <MantineProvider theme={{ fontFamily: "Microsoft YaHei" }} withGlobalStyles>
       <TypographyStylesProvider>
+        <Head>
+          <title>AutoFlow</title>
+        </Head>
         <Header />
         <Content />
         <Footer />

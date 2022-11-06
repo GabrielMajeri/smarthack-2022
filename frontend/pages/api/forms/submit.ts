@@ -78,6 +78,8 @@ export default async function handler(
   const { id: formOutputId } = await response.json();
   console.log("Saved form data with ID %s", formOutputId);
 
+  res.status(200).send("OK");
+
   const nodeExecutionFinishDto = {
     flowId,
     flowInstanceId,
@@ -98,6 +100,4 @@ export default async function handler(
     `${EXECUTOR_MICROSERVICE_URL}/executor/onNodeExecutionFinish`,
     requestOptions
   );
-
-  res.status(200).send("OK");
 }
