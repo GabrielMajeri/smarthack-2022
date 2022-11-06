@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_mysqldb import MySQL
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv, find_dotenv
+from docxtpl import DocxTemplate
 import os
 import uuid
 import hashlib
@@ -107,6 +108,44 @@ def get_file_as_hash(id):
                 return jsonify({'hash': data_hashed})
         except:
             return 'Not found', 404
+
+
+@app.route('/documents/<id>/generate', methods=['POST'])
+def generate_template(id):
+    if request.method == 'POST':
+        context_json = request.json
+        cursor = mysql_api.connection.cursor()
+        sql_q = f"SELECT * FROM documents WHERE id='{id}'"
+
+        result = cursor.execute(sql_q)
+        data = cursor.fetchall()
+
+        if not data:
+            return 'Not found', 404
+        
+        try:
+            doc = DocxTemplate(upload_folder + data[0]['file_path'])
+        except:
+            return 'Not a template', 400
+
+        f_uuid = str(uuid.uuid4())
+
+        try:
+            doc.render(context_json)
+        except:
+            return 'Could not generate from template', 400
+
+        doc.save(upload_folder + f'{f_uuid}.docx')
+
+        f_size = os.stat(upload_folder + f_uuid + '.docx').st_size
+
+        cursor = mysql_api.connection.cursor()
+        sql_q = 'INSERT INTO documents (name, file_path, size) VALUES (%s, %s, %s)'
+
+        cursor.execute(sql_q, (f'{f_uuid}.docx', f'{f_uuid}.docx', f_size))
+        mysql_api.connection.commit()
+
+        return jsonify({'id': cursor.lastrowid})
 
 
 if __name__ == "__main__":
