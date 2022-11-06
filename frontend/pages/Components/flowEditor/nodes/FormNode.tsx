@@ -50,7 +50,7 @@ export function FormNode({ id, data }: { id: string; data: Data }) {
 
   const { updateNodeData } = useStore();
 
-  useEffect(() => {
+  const saveChanges = () => {
     const data = {
       slug: form.values.slug,
       title: form.values.title,
@@ -58,30 +58,32 @@ export function FormNode({ id, data }: { id: string; data: Data }) {
       fields: form.values.fields,
     };
     updateNodeData(id, data);
-  }, [form.values]);
+  };
 
-  const defaultList = [] as any;
-
-  // React state to track order of items
-  const [itemList, setItemList] = useState(defaultList);
+  useEffect(() => saveChanges(), [form.values]);
 
   // Function to update list on drop
-  const handleDrop = (droppedItem: any) => {
+  const handleDrop = ({ destination, source }: any) => {
     // Ignore drop outside droppable container
-    if (!droppedItem.destination) return;
-    var updatedList = [...itemList];
+    if (!destination) {
+      return;
+    }
 
-    // Remove dragged item
-    const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
-    // Add dropped item
-    updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
-    // Update State
-    setItemList(updatedList);
+    form.reorderListItem("fields", {
+      from: source.index,
+      to: destination.index,
+    });
   };
 
   const addFormField = () => {
     const id = form.values.fields.length;
-    form.insertListItem("fields", { id, name: "", label: "", required: false });
+    form.insertListItem("fields", {
+      id,
+      type: "text",
+      name: "",
+      label: "",
+      required: false,
+    });
   };
 
   const removeFormField = (index: number) => {
@@ -144,6 +146,8 @@ export function FormNode({ id, data }: { id: string; data: Data }) {
                       >
                         <FormField
                           form={form}
+                          index={index}
+                          onChange={saveChanges}
                           onRemove={() => removeFormField(index)}
                         />
                       </div>

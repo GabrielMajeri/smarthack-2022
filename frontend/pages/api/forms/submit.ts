@@ -7,7 +7,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { flowId, formId } = req.body;
+  const { flowId, formNodeId } = req.body;
 
   // Create a new instance for this flow
   const response = await fetch(
