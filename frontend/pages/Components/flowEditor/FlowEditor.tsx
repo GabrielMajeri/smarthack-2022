@@ -53,6 +53,7 @@ const FlowEditor = () => {
         id: getId(),
         type,
         position,
+        dragHandle: ".custom-drag-handle",
         sourcePosition: "right",
         targetPosition: "left",
         data: { label: `${type} node` },

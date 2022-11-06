@@ -3,34 +3,43 @@ import { Handle, Position } from "reactflow";
 import useStore from "../FlowStore";
 import NodeHeader from "./NodeHeader";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import {
+  Textarea,
+  Text,
+  TextInput,
+  Button,
+  Center,
+  Group,
+} from "@mantine/core";
+import FormInput from "./FormNodeParts/FormInput";
+import { Data } from "./SendMailNode";
+import { IconLink, IconPlus } from "@tabler/icons";
+import uuid from "react-uuid";
 
 const handleStyle = {
-  //   height: 50,
+  // height: 50,
   border: "1px solid #eee",
   padding: "5px",
   borderRadius: "5px",
   background: "white",
 };
 
-type TextboxInput = { label: string };
-type CheckboxInput = { label: string; value: string };
-type DropdownInput = { label: string; value: string };
-type Input = TextboxInput | CheckboxInput | DropdownInput;
+// type TextboxInput = { label: string };
+// type CheckboxInput = { label: string; value: string };
+// type DropdownInput = { label: string; value: string };
+// type Input = TextboxInput | CheckboxInput | DropdownInput;
 
-export type Data = { formFields: Input[] };
-
-const defaultList = ["A", "B", "C", "D", "E"];
+// export type Data = { formFields: Input[] };
 
 export function FormNode({ id, data }: { id: string; data: Data }) {
   const { updateNodeMail } = useStore();
 
-  const defaultList = ["A", "B", "C", "D", "E"];
+  const defaultList = ["A", "B"];
   // React state to track order of items
   const [itemList, setItemList] = useState(defaultList);
 
   // Function to update list on drop
   const handleDrop = (droppedItem: any) => {
-    console.log(droppedItem);
     // Ignore drop outside droppable container
     if (!droppedItem.destination) return;
     var updatedList = [...itemList];
@@ -48,11 +57,43 @@ export function FormNode({ id, data }: { id: string; data: Data }) {
     updateNodeMail(id, email);
   }, []);
 
+  const addFormInput = () => {
+    console.log("hi");
+    setItemList([...itemList, uuid()]);
+    console.log(itemList);
+  };
+
   return (
     <div style={handleStyle}>
       <Handle type="target" position={Position.Left} />
       <div>
-        <NodeHeader title={"Generează formular"} />
+        <span className="custom-drag-handle">
+          <NodeHeader
+            className="custom-drag-handle"
+            title={"Generează formular"}
+          />
+        </span>
+        <TextInput
+          style={{ width: 500 }}
+          placeholder="Titlu"
+          label="Introdu titlu"
+          withAsterisk
+        />
+
+        <Textarea
+          label="Descriere"
+          placeholder="Introdu detalii despre formular"
+          autosize
+          minRows={2}
+          maxRows={4}
+        />
+        <TextInput
+          label="Nume link"
+          placeholder="Introdu numele link-ului"
+          withAsterisk
+        />
+
+        <Text fz="sm">Câmpuri</Text>
         <DragDropContext onDragEnd={handleDrop}>
           <Droppable droppableId="list-container">
             {(provided) => (
@@ -70,7 +111,7 @@ export function FormNode({ id, data }: { id: string; data: Data }) {
                         ref={provided.innerRef}
                         className="item-container"
                       >
-                        {item}
+                        <FormInput></FormInput>
                       </div>
                     )}
                   </Draggable>
@@ -80,6 +121,16 @@ export function FormNode({ id, data }: { id: string; data: Data }) {
             )}
           </Droppable>
         </DragDropContext>
+        <Group position="center">
+          <Button onClick={addFormInput}>
+            {" "}
+            <IconPlus></IconPlus>Adaugă câmp
+          </Button>
+          <Button onClick={addFormInput}>
+            {" "}
+            <IconLink></IconLink>Obține link acces
+          </Button>
+        </Group>
       </div>
       <Handle type="source" position={Position.Right} id="b" />
     </div>

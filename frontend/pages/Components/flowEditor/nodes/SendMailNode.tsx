@@ -25,11 +25,18 @@ export function SendMailNode({ id, data }: { id: string; data: Data }) {
     <div style={handleStyle}>
       <Handle type="target" position={Position.Left} />
       <div>
-        <NodeHeader title={"Trimite e-mail"} />
+        <span className="custom-drag-handle">
+          <NodeHeader className="custom-drag-handle" title={"Trimite e-mail"} />
+        </span>
 
         <label htmlFor="text">E-mail: </label>
         <br></br>
-        <input id="text" name="text" onChange={onChange} />
+        <input
+          id="text"
+          name="text"
+          value={data.destination}
+          onChange={onChange}
+        />
       </div>
       <Handle type="source" position={Position.Right} id="b" />
     </div>
