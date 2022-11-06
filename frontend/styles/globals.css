@@ -1,10 +1,10 @@
 :root {
-    --custom-dark-blue: #223b5a;
-    --custom-light-blue: #50b6cf;
-    --custom-red: #e34e4b;
-    --custom-light-light-blue: #d0ebf2;
-  }
-  /* html,
+  --custom-dark-blue: #223b5a;
+  --custom-light-blue: #50b6cf;
+  --custom-red: #e34e4b;
+  --custom-light-light-blue: #d0ebf2;
+}
+/* html,
   body {
     padding: 0;
     margin: 0;
