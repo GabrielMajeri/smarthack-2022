@@ -1,23 +1,23 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: false,
-  swcMinify: true,
-};
+
+const FLOWS_MICROSERVICE_URL = process.env.FLOWS_MICROSERVICE_URL;
 
 module.exports = () => {
   const rewrites = () => {
     return [
       {
         source: "/api/flows",
-        destination: "http://localhost:5000/flows",
+        destination: `${FLOWS_MICROSERVICE_URL}/flows`,
       },
       {
         source: "/api/flows/:id",
-        destination: "http://localhost:5000/flows/:id",
+        destination: `${FLOWS_MICROSERVICE_URL}/flows/:id`,
       },
     ];
   };
   return {
+    reactStrictMode: false,
+    swcMinify: true,
     rewrites
   };
 };
