@@ -100,10 +100,12 @@ def execute_node():
     nodeType = currentNodeData['nodeType']
 
     if nodeType == 'sendMailNode':
+        subject = currentNodeData['subject']
+        message = currentNodeData['message']
         destinationAddress = currentNodeData['destinationAddress']
         params = {
-            'message_title': 'Mesaj de test',
-            'message_body': 'Scuze am uitat să pun un mesaj',
+            'message_title': subject,
+            'message_body': message,
             'sender': 'Autoflow Executor',
             'recipients': [destinationAddress]
         }

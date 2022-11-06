@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Handle, Position } from "reactflow";
 import useStore from "../FlowStore";
 import NodeHeader from "./NodeHeader";
@@ -7,7 +7,6 @@ import { Textarea, Text, TextInput, Button, Card, Group } from "@mantine/core";
 import FormField from "./FormNodeParts/FormField";
 import { IconLink, IconPlus } from "@tabler/icons";
 import { useForm } from "@mantine/form";
-import uuid from "react-uuid";
 
 const handleStyle = {
   // height: 50,
@@ -61,6 +60,16 @@ export function FormNode({ id, data }: { id: string; data: Data }) {
   };
 
   useEffect(() => saveChanges(), [form.values]);
+
+  const [formLinkVisible, setFormLinkVisible] = useState(false);
+
+  const formLink = useMemo(() => {
+    if (!formLinkVisible) {
+      return "";
+    }
+
+    return `http://localhost:3000/forms/police/${form.values.slug}`;
+  }, [formLinkVisible]);
 
   // Function to update list on drop
   const handleDrop = ({ destination, source }: any) => {
@@ -161,14 +170,17 @@ export function FormNode({ id, data }: { id: string; data: Data }) {
         </DragDropContext>
         <Group position="center">
           <Button onClick={addFormField}>
-            {" "}
-            <IconPlus></IconPlus>Adaugă câmp
+            <IconPlus></IconPlus> &nbsp; Adaugă câmp
           </Button>
-          <Button onClick={() => ({})}>
-            {" "}
-            <IconLink></IconLink>Obține link acces
+          <Button onClick={() => setFormLinkVisible(true)}>
+            <IconLink></IconLink> &nbsp; Obține link acces
           </Button>
         </Group>
+        {formLinkVisible && (
+          <div style={{ padding: "0.5em 0.25em" }}>
+            <TextInput value={formLink} readOnly />
+          </div>
+        )}
       </div>
       <Handle type="source" position={Position.Right} id="b" />
     </div>

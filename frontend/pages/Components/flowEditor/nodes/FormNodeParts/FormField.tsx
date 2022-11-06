@@ -58,10 +58,12 @@ const FormField = ({
         withAsterisk
         {...form.getInputProps(`fields.${index}.placeholder`)}
       />
-      <Checkbox
-        label="Câmp obligatoriu"
-        {...form.getInputProps(`fields.${index}.required`)}
-      />
+      <div style={{ padding: "1em 0.5em 0" }}>
+        <Checkbox
+          label="Acest câmp va fi obligatoriu"
+          {...form.getInputProps(`fields.${index}.required`)}
+        />
+      </div>
     </Card>
   );
 };

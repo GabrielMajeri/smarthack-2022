@@ -1,7 +1,8 @@
-import { Group, CloseButton } from "@mantine/core";
-import { useCallback } from "react";
+import { TextInput, Textarea } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { useEffect } from "react";
 import { Handle, Position } from "reactflow";
-import useStore, { useNodeData } from "../FlowStore";
+import useStore from "../FlowStore";
 import NodeHeader from "./NodeHeader";
 
 const handleStyle = {
@@ -13,18 +14,30 @@ const handleStyle = {
   background: "white",
 };
 
-export type Data = { destinationAddress: string };
+export type Data = {
+  destinationAddress: string;
+  subject: string;
+  message: string;
+};
 
 export function SendMailNode({ id, data }: { id: string; data: Data }) {
+  const form = useForm({
+    initialValues: {
+      destinationAddress: data.destinationAddress,
+      subject: data.subject,
+      message: data.message,
+    },
+  });
   const { updateNodeData } = useStore();
 
-  const onChange = useCallback((evt: any) => {
-    const email = evt.target.value;
-    updateNodeData(id, { destinationAddress: email });
-  }, []);
-
-  const nodeData = useNodeData<Data>(id);
-  console.log(nodeData);
+  useEffect(() => {
+    const newData: Data = {
+      destinationAddress: form.values.destinationAddress,
+      subject: form.values.subject,
+      message: form.values.message,
+    };
+    updateNodeData(id, newData);
+  }, [form.values]);
 
   return (
     <div style={handleStyle}>
@@ -32,13 +45,25 @@ export function SendMailNode({ id, data }: { id: string; data: Data }) {
       <div>
         <NodeHeader title="Trimite e-mail" id={id} />
 
-        <label htmlFor="destinationAddress">E-mail: </label>
-        <br></br>
-        <input
-          id="destinationAddress"
-          name="destinationAddress"
-          value={data.destinationAddress || nodeData?.destinationAddress}
-          onChange={onChange}
+        <TextInput
+          label="Destinatar"
+          placeholder="exemplu@localhost"
+          withAsterisk
+          {...form.getInputProps("destinationAddress")}
+        />
+
+        <TextInput
+          label="Subiect"
+          placeholder="Exemplu"
+          withAsterisk
+          {...form.getInputProps("subject")}
+        />
+
+        <Textarea
+          label="Conținutul mesajului"
+          placeholder="Scrieți aici mesajul dvs...."
+          withAsterisk
+          {...form.getInputProps("message")}
         />
       </div>
       <Handle type="source" position={Position.Right} id="b" />

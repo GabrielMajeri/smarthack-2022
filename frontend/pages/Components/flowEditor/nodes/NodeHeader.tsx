@@ -1,4 +1,4 @@
-import { Center, CloseButton, Group } from "@mantine/core";
+import { Center, CloseButton, Group, Text } from "@mantine/core";
 import useStore from "../FlowStore";
 
 type NodeHeaderProps = {
@@ -15,12 +15,9 @@ const NodeHeader = ({ title, id }: NodeHeaderProps) => {
         <CloseButton aria-label="Close modal" onClick={() => removeNode(id)} />
       </Group>
       <Center>
-        <span
-          className="custom-drag-handle"
-          style={{ fontWeight: "bold", fontSize: "1.5em" }}
-        >
+        <Text className="custom-drag-handle" fz="xl" weight={600}>
           {title}
-        </span>
+        </Text>
       </Center>
       <hr></hr>
     </div>

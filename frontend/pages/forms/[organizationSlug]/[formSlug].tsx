@@ -208,7 +208,7 @@ const Form = ({ flow, formData }: FormProps) => {
 
     fetch("/api/forms/submit", requestOptions).then((response) => {
       if (response.ok) {
-        // Router.push("/forms/thanks");
+        Router.push("/forms/thanks");
       }
     });
   }, []);
