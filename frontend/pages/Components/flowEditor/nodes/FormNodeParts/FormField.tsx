@@ -4,10 +4,24 @@ import {
   CloseButton,
   Group,
   Select,
+  Text,
   TextInput,
 } from "@mantine/core";
+import { useEffect } from "react";
 
-const FormField = () => {
+const FormField = ({
+  form,
+  index,
+  onChange,
+  onRemove,
+}: {
+  form: any;
+  index: number;
+  onChange: () => void;
+  onRemove: () => void;
+}) => {
+  useEffect(onChange, form.values.fields[index]);
+
   return (
     <Card
       style={{
@@ -17,24 +31,37 @@ const FormField = () => {
         borderRadius: "5px",
       }}
     >
+      <Text fz="sm" fw={700}>
+        Câmp #{index + 1}
+      </Text>
       <Group position="right">
-        <CloseButton aria-label="Close modal" />
+        <CloseButton aria-label="Close modal" onClick={onRemove} />
       </Group>
       <Select
-        placeholder="Tip câmp"
+        withAsterisk
+        label="Tip câmp"
         data={[
           { value: "text", label: "Text" },
           { value: "checkbox", label: "Bifă" },
-          { value: "dropdown", label: "Dropdown" },
+          { value: "select", label: "Dropdown" },
         ]}
+        {...form.getInputProps(`fields.${index}.type`)}
       />
       <TextInput
         placeholder="Ce cere utilizatorului?"
         label="Cerință câmp"
         withAsterisk
+        {...form.getInputProps(`fields.${index}.label`)}
       />
-      <TextInput label="Placeholder" withAsterisk />
-      <Checkbox label="Câmp obligatoriu" />
+      <TextInput
+        label="Placeholder"
+        withAsterisk
+        {...form.getInputProps(`fields.${index}.placeholder`)}
+      />
+      <Checkbox
+        label="Câmp obligatoriu"
+        {...form.getInputProps(`fields.${index}.required`)}
+      />
     </Card>
   );
 };

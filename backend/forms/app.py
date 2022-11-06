@@ -14,4 +14,4 @@ def submit_form():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5003)
+    app.run(debug=True, host='::', port=5003)
