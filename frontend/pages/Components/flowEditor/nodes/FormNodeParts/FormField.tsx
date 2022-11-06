@@ -7,7 +7,7 @@ import {
   TextInput,
 } from "@mantine/core";
 
-const FormField = () => {
+const FormField = ({ form, onRemove }: { form: any; onRemove: () => void }) => {
   return (
     <Card
       style={{
@@ -18,7 +18,7 @@ const FormField = () => {
       }}
     >
       <Group position="right">
-        <CloseButton aria-label="Close modal" />
+        <CloseButton aria-label="Close modal" onClick={onRemove} />
       </Group>
       <Select
         placeholder="Tip câmp"
@@ -27,6 +27,7 @@ const FormField = () => {
           { value: "checkbox", label: "Bifă" },
           { value: "dropdown", label: "Dropdown" },
         ]}
+        {...form.getInputProps("type")}
       />
       <TextInput
         placeholder="Ce cere utilizatorului?"
