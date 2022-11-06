@@ -141,15 +141,17 @@ const About = () => {
                 </Button>
               </Link>
 
+              <Link to="/login-form" smooth duration={500}>
               <Button
                 variant="default"
                 radius="lg"
                 size="md"
-                //onClick={() => Router.push("/login-form")}
-                onClick={() => Router.push("/form")}
+                onClick={() => Router.push("/login-form")}
+                
               >
                 Conectare
               </Button>
+              </Link>
             </div>
           </div>
         </Container>

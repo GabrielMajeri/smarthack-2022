@@ -48,7 +48,7 @@ export default function LoginForm(props: PaperProps) {
             variant="default"
             radius="lg"
             size="md"
-            onClick={() => signIn(undefined, { callbackUrl: "/login" })}
+            onClick={() => signIn(undefined, { callbackUrl: "/dashboard" })}
           >
             Ai deja un cont? Conectează-te
           </Button>

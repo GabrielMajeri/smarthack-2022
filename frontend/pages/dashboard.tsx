@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   AppShell,
   Navbar,
   Header,
+  Footer,
+  Aside,
+  Text,
   MediaQuery,
   Burger,
   useMantineTheme,
