@@ -17,7 +17,8 @@ app.config['MAIL_USE_SSL'] = os.environ.get('MAIL_USE_SSL')
 
 mail_api = Mail(app)
 mongo_api = MongoAPI({'database': 'smarthack', 'collection': 'flows'})
-mongo_api_2 = MongoAPI({'database': 'smarthack', 'collection': 'flows_instances'})
+mongo_api_2 = MongoAPI(
+    {'database': 'smarthack', 'collection': 'flows_instances'})
 
 
 @app.route('/')
@@ -60,14 +61,14 @@ def flow(id):
         mongo_api.collection.delete_one({'_id': ObjectId(id)})
         return 'Deleted.', 200
 
-
     if request.method == 'PUT':
         flow_query = mongo_api.collection.find_one(ObjectId(id))
 
         if not flow_query:
             return 'Not found', 404
-        
-        mongo_api.collection.update_one({'_id': ObjectId(id)}, {"$set": request.json})
+
+        mongo_api.collection.update_one(
+            {'_id': ObjectId(id)}, {"$set": request.json})
         return jsonify("Updated")
 
 
@@ -84,7 +85,7 @@ def flow_hash(id):
 @app.route('/flows/<id>/instances', methods=['GET', 'POST'])
 def flows_instances(id):
     if request.method == 'GET':
-        flows_query = list(mongo_api_2.collection.find({"parent_id": id}))
+        flows_query = list(mongo_api_2.collection.find({"parentFlowId": id}))
         flows = []
 
         for flow in flows_query:
@@ -94,7 +95,8 @@ def flows_instances(id):
 
     if request.method == 'POST':
         request_data = request.json
-        request_data['created'] = datetime.datetime.timestamp(datetime.datetime.now())
+        request_data['createdAt'] = datetime.datetime.timestamp(
+            datetime.datetime.now())
 
         result = mongo_api_2.collection.insert_one(request.json).inserted_id
         return jsonify({'id': str(result)})
@@ -107,8 +109,8 @@ def send_email():
 
         msg = Message(
             mail_data.get('message_title'),
-            sender = mail_data.get('sender'),
-            recipients = mail_data.get('recipients')
+            sender=mail_data.get('sender'),
+            recipients=mail_data.get('recipients')
         )
 
         msg.body = mail_data.get('message_body')
