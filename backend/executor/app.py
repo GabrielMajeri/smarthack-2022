@@ -3,6 +3,7 @@ from flask import Flask, request
 import requests
 import os
 import json
+import re
 
 
 app = Flask(__name__)
@@ -11,6 +12,8 @@ load_dotenv()
 
 FLOWS_ENDPOINT_URL = os.environ.get('FLOWS_ENDPOINT_URL')
 EXECUTOR_ENDPOINT_URL = os.environ.get('EXECUTOR_ENDPOINT_URL')
+
+STRING_REPLACEMENT_MATCHER = re.compile(r'{{\s*([^\s]+)\s*}}')
 
 
 @app.post('/executor/onNodeExecutionFinish')
@@ -79,6 +82,7 @@ def execute_node():
 
     print('Node', nodeId, 'started executing')
 
+    print(input)
     # Read the flow's data
     req = requests.get(FLOWS_ENDPOINT_URL + '/flows/' + flowId)
     flow = json.loads(req.content)
@@ -103,12 +107,31 @@ def execute_node():
         subject = currentNodeData['subject']
         message = currentNodeData['message']
         destinationAddress = currentNodeData['destinationAddress']
+
+        replacement_keys = STRING_REPLACEMENT_MATCHER.findall(subject)
+        for key in replacement_keys:
+            value = input[key]
+            subject = re.sub(fr'{{{{\s*{key}\s*}}}}', value, subject)
+
+        replacement_keys = STRING_REPLACEMENT_MATCHER.findall(message)
+        for key in replacement_keys:
+            value = input[key]
+            message = re.sub(fr'{{{{\s*{key}\s*}}}}', value, message)
+
+        replacement_keys = STRING_REPLACEMENT_MATCHER.findall(
+            destinationAddress)
+        for key in replacement_keys:
+            value = input[key]
+            destinationAddress = re.sub(
+                fr'{{{{\s*{key}\s*}}}}', value, destinationAddress)
+
         params = {
             'message_title': subject,
             'message_body': message,
             'sender': 'Autoflow Executor',
             'recipients': [destinationAddress]
         }
+        print(params)
         res = requests.post(FLOWS_ENDPOINT_URL + '/mail', json=params)
         # TODO check response
         print(res)

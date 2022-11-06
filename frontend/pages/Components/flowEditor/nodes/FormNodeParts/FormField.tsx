@@ -48,6 +48,12 @@ const FormField = ({
         {...form.getInputProps(`fields.${index}.type`)}
       />
       <TextInput
+        label="Denumire internă câmp"
+        placeholder="input_field_1"
+        withAsterisk
+        {...form.getInputProps(`fields.${index}.name`)}
+      />
+      <TextInput
         placeholder="Ce cere utilizatorului?"
         label="Cerință câmp"
         withAsterisk
