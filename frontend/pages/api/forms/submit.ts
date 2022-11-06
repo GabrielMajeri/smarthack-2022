@@ -8,5 +8,5 @@ export default function handler(
 ) {
   console.log("Received form submission with data:", req.body);
 
-  res.status(200);
+  res.status(200).send("OK");
 }
