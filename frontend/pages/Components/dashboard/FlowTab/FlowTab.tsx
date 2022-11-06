@@ -1,12 +1,12 @@
 import { Grid } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import FlowCard, { FlowCardData } from "./FlowCard";
 import FlowCardAdd from "./FlowCardAdd";
 
 const FlowTab = () => {
   const [cards, setCards] = useState<FlowCardData[]>([]);
 
-  useEffect(() => {
+  const fetchData = useCallback(() => {
     fetch(`/api/flows`)
       .then((response) => {
         return response.json();
@@ -21,13 +21,17 @@ const FlowTab = () => {
       });
   }, []);
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <Grid>
         {cards.map((card: FlowCardData) => {
           return <FlowCard data={card} key={card.id}></FlowCard>;
         })}
-        <FlowCardAdd />
+        <FlowCardAdd onAdd={fetchData} />
       </Grid>
     </>
   );

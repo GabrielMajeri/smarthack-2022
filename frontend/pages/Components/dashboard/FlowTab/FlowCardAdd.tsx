@@ -10,10 +10,27 @@ import {
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons";
 
-const FlowCard = () => {
+const FlowCard = ({ onAdd }: { onAdd: () => void }) => {
+  const addFlow = () => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: "Flow nou", date: "" }),
+    };
+
+    fetch("/api/flows/", requestOptions)
+      .then((response) => {
+        return response.status;
+      })
+      .then((status) => {
+        if (status == 200) {
+          onAdd();
+        }
+      });
+  };
   return (
     <Grid.Col span={2}>
-      <Card shadow="sm" p="lg" radius="md" withBorder>
+      <Card onClick={addFlow} shadow="sm" p="lg" radius="md" withBorder>
         <Card.Section>
           <Center>
             <IconPlus height={160} size={48} />
