@@ -24,6 +24,7 @@ type RFState = {
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
   addNode: any;
+  addEdge: any;
   updateNodeMail: any;
 };
 
@@ -32,14 +33,14 @@ const useStore = create<RFState>((set, get) => ({
   nodes: [],
   edges: [],
   onNodesChange: (changes: NodeChange[]) => {
-    // set({
-    //   nodes: applyNodeChanges(changes, get().nodes),
-    // });
+    set({
+      nodes: applyNodeChanges(changes, get().nodes),
+    });
   },
   onEdgesChange: (changes: EdgeChange[]) => {
-    // set({
-    //   edges: applyEdgeChanges(changes, get().edges),
-    // });
+    set({
+      edges: applyEdgeChanges(changes, get().edges),
+    });
   },
   onConnect: (connection: Connection) => {
     set({
@@ -52,13 +53,18 @@ const useStore = create<RFState>((set, get) => ({
     });
     console.log(newNode, get().nodes);
   },
+  addEdge: (newEdge: Edge) => {
+    set({
+      edges: get().edges.concat(newEdge),
+    });
+    console.log("edge", newEdge, get().edges);
+  },
   updateNodeMail(nodeId: string, mail: string) {
     set({
       nodes: get().nodes.map((node) => {
         if (node.id === nodeId) {
           node.data = { ...node.data, mail };
         }
-
         return node;
       }),
     });

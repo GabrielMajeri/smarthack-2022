@@ -25,7 +25,7 @@ export function SendMailNode({ id, data }: { id: string; data: Data }) {
     <div style={handleStyle}>
       <Handle type="target" position={Position.Left} />
       <div>
-        <NodeHeader title={"Generează formular"} />
+        <NodeHeader title={"Trimite e-mail"} />
 
         <label htmlFor="text">E-mail: </label>
         <br></br>

@@ -13,7 +13,7 @@ const Teams = () => {
   return (
     <>
       {fakeTeams.map((object) => {
-        return <MainLink label={object.name}></MainLink>;
+        return <MainLink label={object.name} key={object.name}></MainLink>;
       })}
     </>
   );

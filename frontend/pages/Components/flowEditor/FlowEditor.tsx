@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactFlow, {
   Background,
   Controls,
@@ -11,9 +11,10 @@ import "reactflow/dist/style.css";
 import { SendMailNode } from "./nodes/SendMailNode";
 import useStore from "./FlowStore";
 import { FormNode } from "./nodes/FormNode";
+import { useRouter } from "next/router";
+import uuid from "react-uuid";
 
-let id = 0;
-const getId = () => `dndnode_${id++}`;
+const getId = () => uuid();
 
 const FlowEditor = () => {
   const reactFlowWrapper = useRef(null);
@@ -25,7 +26,7 @@ const FlowEditor = () => {
 
   const { nodes, edges, onNodesChange, onEdgesChange, onConnect, addNode } =
     useStore();
-
+  console.log("nn", nodes);
   const onDragOver = useCallback((event: any) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
