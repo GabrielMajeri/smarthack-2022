@@ -11,15 +11,20 @@ import {
   useMantineTheme,
   Image,
   Box,
+  Group,
 } from "@mantine/core";
 import Organisation from "./Components/dashboard/Organisation";
 import Teams from "./Components/dashboard/Teams";
 import { MainLink } from "./Components/MainLink";
 import DashboardTabs from "./Components/dashboard/DashboardTabs";
+import { useSession } from "next-auth/react";
+import { FiFlag, FiUser } from "react-icons/fi";
 
 export default function AppShellDemo() {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const { data: session } = useSession();
+
   return (
     <AppShell
       styles={{
@@ -68,10 +73,8 @@ export default function AppShellDemo() {
       //   </Footer>
       // }
       header={
-        <Header height={{ base: 50, md: 70 }} p="md">
-          <div
-            style={{ display: "flex", alignItems: "center", height: "100%" }}
-          >
+        <Header height={{ base: 10, md: 70 }} p="md">
+          <div style={{ display: "flex" }}>
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>
               <Burger
                 opened={opened}
@@ -81,7 +84,24 @@ export default function AppShellDemo() {
                 mr="xl"
               />
             </MediaQuery>
+
             <Image height={48} width={150} src="/logo.png"></Image>
+
+            {session ? (
+              <div style={{ marginLeft: "auto" }}>
+                <Group>
+                  <FiUser
+                    size={30}
+                    style={{ color: "var(--custom-dark-blue)" }}
+                  />
+                  <Text size="lg" style={{ color: "var(--custom-dark-blue)" }}>
+                    {session?.user?.name}
+                  </Text>
+                </Group>
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
         </Header>
       }
