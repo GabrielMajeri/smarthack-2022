@@ -1,5 +1,7 @@
 # Back end microservices
 
+## Virtual environment
+
 Create a new Python virtual environment in this directory:
 
 ```bash
@@ -20,8 +22,16 @@ Activate the virtual environment:
   source ./venv/bin/activate
   ```
 
-Install all of the required requirements:
+## Dependencies
+
+On Ubuntu, it might be necessary to first install the following packages using `apt`:
+
+```
+libmysqlclient-dev libpython3-dev
+```
+
+Then install all of the required Python packages:
 
 ```bash
-pip install -r flows/requirements.txt
+pip install -r requirements.txt
 ```
