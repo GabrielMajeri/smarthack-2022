@@ -16,8 +16,8 @@ module.exports = () => {
       },
       {
         source: "/api/documents",
-        destination: `${DOCUMENTS_MICROSERVICE_URL}/documents`
-      }
+        destination: `${DOCUMENTS_MICROSERVICE_URL}/documents`,
+      },
     ];
   };
   return {
