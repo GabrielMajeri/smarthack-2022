@@ -1,0 +1,5 @@
+# Explicitly ignore these files, just in case
+# somebody accidentally runs `npm install` at the top level
+/package.json
+/package-lock.json
+/node_modules/
